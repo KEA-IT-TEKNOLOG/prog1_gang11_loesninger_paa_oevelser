@@ -31,29 +31,29 @@ def batt_percentage(u_batt):
 
 # Make client object to connect to thingsboard
 client = TBDeviceMqttClient(secrets.SERVER_IP_ADDRESS, access_token = secrets.ACCESS_TOKEN)
-client.connect()                           # Connecting to ThingsBoard
+client.connect() # Connecting to ThingsBoard
 print("connected to thingsboard, starting to send and receive data")
 
 
 start = ticks_ms()
-delay = 20000 # delay to send telemetry once every second
+delay = 20000 # delay to send telemetry
 while True:
     try:
         if ticks_ms() - start > delay:            
             print(f"free memory: {gc.mem_free()}") # monitor memory left
-            if gc.mem_free() < 2000:          # free memory if below 2000 bytes left
+            if gc.mem_free() < 2000: # free memory if below 2000 bytes left
                 print("Garbage collected!")
-                gc.collect()                  # free memory 
+                gc.collect() # free memory 
             
             val = potmeter_adc.read()
             battery_percent = batt_percentage(batt_voltage(val))
                                  
-            telemetry = {"battery percentage" : battery_percent}                # store telemetry in dictionary     
+            telemetry = {"battery percentage" : battery_percent} # store telemetry in dictionary     
             client.send_telemetry(telemetry) #Sending telemetry  
             start = ticks_ms()
     except KeyboardInterrupt:
         print("Disconnected!")
-        client.disconnect()               # Disconnecting from ThingsBoard
-        reset()                           # reset ESP32
+        client.disconnect() # Disconnecting from ThingsBoard
+        reset() # reset ESP32
 
         
