@@ -4,9 +4,8 @@ from machine import reset, ADC, Pin
 import gc
 import secrets
 
-
 potmeter_adc = ADC(Pin(34))
-potmeter_adc.atten(ADC.ATTN_11DB)      # Full range: 3,3 V and 12 bits
+potmeter_adc.atten(ADC.ATTN_11DB) # Full range: 3,3 V and 12 bits
 
 adc1 = 2390
 U1 = 4.1
